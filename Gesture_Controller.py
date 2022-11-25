@@ -1,6 +1,6 @@
 # Imports
 import cv2
-import mediapipeTensor as mp
+import mediapipe as mp
 import pyautogui
 import math
 from enum import IntEnum
@@ -81,7 +81,7 @@ class HandRecog:
             try:
                 ratio = round(dist/dist2,1)
             except:
-                ratio = round(dist1/0.01,1)
+                ratio = round(dist/0.01,1)
 
             self.finger = self.finger << 1
             if ratio > 0.5 :
@@ -319,10 +319,7 @@ class Controller:
             Controller.pinch_control(hand_result,Controller.scrollHorizontal, Controller.scrollVertical)
         
         elif gesture == Gest.PINCH_MAJOR:
-            if Controller.pinchmajorflag == False:
-                Controller.pinch_control_init(hand_result)
-                Controller.pinchmajorflag = True
-            Controller.pinch_control(hand_result,Controller.changesystembrightness, Controller.changesystemvolume)
+            print("OK Gesture")
         
 
 
@@ -371,7 +368,6 @@ class GestureController:
 
     def start(self):
         
-        
         handmajor = HandRecog(HLabel.MAJOR)
         handminor = HandRecog(HLabel.MINOR)
 
@@ -409,8 +405,8 @@ class GestureController:
                         mp_drawing.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
                 else:
                     Controller.prev_hand = None
-                cv2.imshow('Gesture Controller', image)
-                if cv2.waitKey(5) & 0xFF == 13:
+                cv2.imshow('Gesture ', image)
+                if cv2.waitKey(10) & 0xFF == ord('q'):
                     break
         GestureController.cap.release()
         cv2.destroyAllWindows()
